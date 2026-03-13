@@ -1,37 +1,64 @@
 import 'package:flutter/material.dart';
-import 'package:zrek_assignment/logic/model/post.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zrek_assignment/logic/bloc/feed/feed_bloc.dart';
 import 'package:zrek_assignment/ui/home/widget/post_card.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent - 300) {
+        final state = context.read<FeedBloc>().state;
+        if (state is FeedLoaded && state.hasMore) {
+          context.read<FeedBloc>().add(FeedLoadMore());
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: ListView.builder(
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return PostCard(
-            post: Post(
-              userId: "user_alex",
-              username: "alex",
-              userAvatarUrl:
-                  "https://api.dicebear.com/7.x/adventurer/png?seed=alex",
-              userStory: index % 2 == 0,
-              isVerified: index % 3 == 0,
-              postId: "post_$index",
-              imageUrls: [
-                "https://picsum.photos/600/600?random=${index * 3}",
-                "https://picsum.photos/600/600?random=${index * 3 + 1}",
-              ],
-              caption: "Golden hour hits different ✨",
-              postTime: DateTime.now().subtract(Duration(hours: index + 1)),
-              likeCount: 128 + index * 10,
-              commentCount: 24,
-              shareCount: 7,
-            ),
-          );
+      body: BlocBuilder<FeedBloc, FeedState>(
+        builder: (context, state) {
+          if (state is FeedLoading || state is FeedInitial) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (state is FeedError) {
+            return Center(child: Text(state.errorMessage));
+          }
+
+          if (state is FeedLoaded) {
+            return ListView.builder(
+              controller: _scrollController,
+              itemCount: state.hasMore
+                  ? state.posts.length + 1
+                  : state.posts.length,
+              itemBuilder: (context, index) {
+                final post = state.posts[index];
+
+                if (index == state.posts.length) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                return PostCard(post: post);
+              },
+            );
+          }
+
+          return const SizedBox();
         },
       ),
     );

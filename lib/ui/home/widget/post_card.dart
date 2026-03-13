@@ -1,7 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:zrek_assignment/core/utlis/zoom_notification.dart';
 import 'package:zrek_assignment/logic/model/post.dart';
+import 'package:zrek_assignment/ui/home/widget/pinch_zoom_image.dart';
+import 'package:zrek_assignment/ui/home/widget/post_caption.dart';
+import 'package:zrek_assignment/ui/home/widget/post_header.dart';
 
 class PostCard extends StatefulWidget {
   const PostCard({super.key, required this.post});
@@ -12,6 +16,8 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
+  bool _isZooming = false;
+
   int _currentIndex = 0;
   late final PageController _pageController;
 
@@ -40,6 +46,7 @@ class _PostCardState extends State<PostCard> {
     final post = widget.post;
 
     return Card(
+      // clipBehavior: .none,
       elevation: 0,
       color: Colors.white,
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -49,99 +56,25 @@ class _PostCardState extends State<PostCard> {
         crossAxisAlignment: .start,
         children: [
           // Header
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: Row(
-              children: [
-                // Avatar with story ring
-                Container(
-                  width: 38,
-                  height: 38,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: post.userStory
-                        ? const LinearGradient(
-                            colors: [
-                              Color(0xFFf09433),
-                              Color(0xFFe6683c),
-                              Color(0xFFdc2743),
-                              Color(0xFFcc2366),
-                              Color(0xFFbc1888),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          )
-                        : null,
-                    color: post.userStory ? null : Colors.transparent,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(post.userStory ? 2 : 0),
-                    child: CircleAvatar(
-                      backgroundImage: CachedNetworkImageProvider(
-                        post.userAvatarUrl,
-                      ),
-                      backgroundColor: Colors.grey[200],
-                    ),
-                  ),
-                ),
-
-                const SizedBox(width: 10),
-
-                // Username + verified
-                Expanded(
-                  child: Row(
-                    children: [
-                      Text(
-                        post.username,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 13,
-                          color: Colors.black,
-                        ),
-                      ),
-                      if (post.isVerified) ...[
-                        const SizedBox(width: 3),
-                        const Icon(
-                          Icons.verified,
-                          size: 13,
-                          color: Color(0xFF0095F6),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-
-                GestureDetector(
-                  onTap: () {},
-                  child: const Icon(Icons.more_vert, size: 20),
-                ),
-              ],
-            ),
-          ),
+          PostHeader(post: post),
 
           // Image Carousal
           Stack(
             children: [
               AspectRatio(
-                aspectRatio: 1,
+                aspectRatio: post.imageUrls.length > 1 ? 4 / 5 : 1,
                 child: PageView.builder(
+                  physics: _isZooming
+                      ? const NeverScrollableScrollPhysics()
+                      : const PageScrollPhysics(),
                   controller: _pageController,
                   itemCount: post.imageUrls.length,
                   onPageChanged: (i) => setState(() => _currentIndex = i),
                   itemBuilder: (context, index) {
-                    return CachedNetworkImage(
-                      imageUrl: post.imageUrls[index],
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      placeholder: (context, url) =>
-                          Container(color: Colors.grey[200]),
-                      errorWidget: (context, url, error) => Container(
-                        color: Colors.grey[200],
-                        child: const Icon(
-                          Icons.broken_image_outlined,
-                          color: Colors.grey,
-                        ),
-                      ),
+                    return NotificationListener<ZoomNotification>(
+                      onNotification: (notification) =>
+                          _isZooming = notification.isZooming,
+                      child: PinchZoomImage(imageUrl: post.imageUrls[index]),
                     );
                   },
                 ),
@@ -252,33 +185,7 @@ class _PostCardState extends State<PostCard> {
           ),
 
           // Captions
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: RichText(
-              text: TextSpan(
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 13,
-                  fontWeight: FontWeight.normal,
-                ),
-
-                children: [
-                  TextSpan(
-                    text: '${post.username} ',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  TextSpan(text: post.caption),
-                  const TextSpan(
-                    text: ' ... more',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          PostCaption(username: post.username, caption: post.caption),
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
