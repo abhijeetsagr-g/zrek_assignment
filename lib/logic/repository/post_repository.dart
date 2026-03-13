@@ -46,9 +46,10 @@ class PostRepository {
         postId: "post_$postIndex",
         userId: "user_$username",
         username: username,
+        userStory: _random.nextBool(),
         userAvatarUrl:
             "https://api.dicebear.com/7.x/adventurer/png?seed=$username",
-        isVerified: _random.nextBool(),
+        isVerified: _random.nextInt(10) > 7,
 
         imageUrls: images,
 
@@ -58,6 +59,7 @@ class PostRepository {
           Duration(minutes: _random.nextInt(600)),
         ),
 
+        shareCount: _random.nextInt(200),
         likeCount: _random.nextInt(500),
         commentCount: _random.nextInt(80),
 
