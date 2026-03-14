@@ -46,42 +46,40 @@ class _FeedScrollViewState extends State<FeedScrollView> {
       builder: (context, state) {
         final isLoading = state is FeedLoading || state is FeedInitial;
 
-        return PinchScrollableArea(
-          child: Builder(
-            builder: (builderContext) => CustomScrollView(
-              controller: _scrollController,
-              physics: PinchScrollLockPhysics.build(builderContext),
-              slivers: [
-                const FeedAppBar(),
-                if (isLoading) const StoriesTrayShimmer(),
-                if (state is FeedLoaded) StoryTray(posts: state.posts),
-                if (isLoading)
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (_, _) => const PostCardShimmer(),
-                      childCount: 5,
-                    ),
-                  )
-                else if (state is FeedLoaded)
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        if (index == state.posts.length) {
-                          return const PostCardShimmer();
-                        }
-                        return PostCard(post: state.posts[index]);
-                      },
-                      childCount: state.isFetchingMore
-                          ? state.posts.length + 1
-                          : state.posts.length,
-                    ),
-                  )
-                else if (state is FeedError)
-                  SliverFillRemaining(
-                    child: Center(child: Text(state.errorMessage)),
+        return Builder(
+          builder: (builderContext) => CustomScrollView(
+            controller: _scrollController,
+            physics: PinchScrollLockPhysics.build(builderContext),
+            slivers: [
+              const FeedAppBar(),
+              if (isLoading) const StoriesTrayShimmer(),
+              if (state is FeedLoaded) StoryTray(posts: state.posts),
+              if (isLoading)
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (_, _) => const PostCardShimmer(),
+                    childCount: 5,
                   ),
-              ],
-            ),
+                )
+              else if (state is FeedLoaded)
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      if (index == state.posts.length) {
+                        return const PostCardShimmer();
+                      }
+                      return PostCard(post: state.posts[index]);
+                    },
+                    childCount: state.isFetchingMore
+                        ? state.posts.length + 1
+                        : state.posts.length,
+                  ),
+                )
+              else if (state is FeedError)
+                SliverFillRemaining(
+                  child: Center(child: Text(state.errorMessage)),
+                ),
+            ],
           ),
         );
       },

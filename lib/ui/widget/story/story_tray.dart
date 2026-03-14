@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zrek_assignment/logic/model/post.dart';
-import 'package:zrek_assignment/ui/widget/story_tray_item.dart';
+import 'package:zrek_assignment/ui/widget/story/story_tray_item.dart';
 
 class StoryTray extends StatelessWidget {
   final List<Post> posts;

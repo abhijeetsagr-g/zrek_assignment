@@ -13,7 +13,7 @@ class StoriesTrayShimmer extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(horizontal: 12),
           itemCount: 7,
-          itemBuilder: (_, __) {
+          itemBuilder: (_, _) {
             return Shimmer.fromColors(
               baseColor: Colors.grey[300]!,
               highlightColor: Colors.grey[100]!,

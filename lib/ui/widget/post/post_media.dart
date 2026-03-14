@@ -14,6 +14,18 @@ class PostMedia extends StatefulWidget {
 class _PostMediaState extends State<PostMedia> {
   int _currentIndex = 0;
   bool _showHeart = false;
+  bool _showLabel = false;
+
+  void _onPageChanged(int i) {
+    setState(() {
+      _currentIndex = i;
+      _showLabel = true;
+    });
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      if (mounted) setState(() => _showLabel = false);
+    });
+  }
+
   void _onDoubleTap(BuildContext context) {
     if (!widget.post.isLiked) {
       context.read<FeedBloc>().add(FeedLikeToggled(widget.post.postId));
@@ -38,27 +50,35 @@ class _PostMediaState extends State<PostMedia> {
                 aspectRatio: 1,
                 child: PageView.builder(
                   itemCount: images.length,
-                  onPageChanged: (i) => setState(() => _currentIndex = i),
+                  onPageChanged: _onPageChanged,
                   itemBuilder: (context, index) =>
                       PostImage(imageUrl: images[index]),
                 ),
               ),
+
               if (isCarousel)
                 Positioned(
                   top: 12,
                   right: 12,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withAlpha(60),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      '${_currentIndex + 1}/${images.length}',
-                      style: const TextStyle(color: Colors.white, fontSize: 12),
+                  child: AnimatedOpacity(
+                    opacity: _showLabel ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 300),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withAlpha(60),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        '${_currentIndex + 1}/${images.length}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -68,7 +88,7 @@ class _PostMediaState extends State<PostMedia> {
                   opacity: _showHeart ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 200),
                   child: const Center(
-                    child: Icon(Icons.favorite, color: Colors.white, size: 80),
+                    child: Icon(Icons.favorite, color: Colors.red, size: 120),
                   ),
                 ),
               ),

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pinch_scrollable/pinch_scrollable.dart';
+import 'package:shimmer/shimmer.dart';
 
 class PostImage extends StatefulWidget {
   const PostImage({super.key, required this.imageUrl});
@@ -40,6 +41,21 @@ class _PostImageState extends State<PostImage> {
                   imageUrl: widget.imageUrl,
                   fit: BoxFit.cover,
                   width: double.infinity,
+                  placeholder: (context, url) => Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(color: Colors.white),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    color: Colors.grey[100],
+                    child: const Center(
+                      child: Icon(
+                        Icons.broken_image_outlined,
+                        color: Colors.grey,
+                        size: 40,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),

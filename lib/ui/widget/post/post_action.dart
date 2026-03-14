@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:like_button/like_button.dart';
 import 'package:zrek_assignment/core/const/app_icons.dart';
+import 'package:zrek_assignment/core/utils/show_snackbar.dart';
 import 'package:zrek_assignment/logic/bloc/feed/feed_bloc.dart';
 import 'package:zrek_assignment/logic/model/post.dart';
 
@@ -52,25 +53,37 @@ class PostAction extends StatelessWidget {
 
               const SizedBox(width: 16),
               // Comment
-              AppIcons.svg(AppIcons.comment, size: 24),
+              GestureDetector(
+                onTap: () => showUnimplementedSnackbar(context, 'Comments'),
+                child: AppIcons.svg(AppIcons.comment, size: 24),
+              ),
               const SizedBox(width: 6),
               Text(
                 '${currentPost.commentCount}',
                 style: const TextStyle(fontSize: 14),
               ),
               const SizedBox(width: 16),
+
               // Share
-              AppIcons.svg(AppIcons.share, size: 22),
+              GestureDetector(
+                onTap: () => showUnimplementedSnackbar(context, 'Share'),
+                child: AppIcons.svg(AppIcons.share, size: 22),
+              ),
               const SizedBox(width: 6),
               Text(
                 '${currentPost.shareCount}',
                 style: const TextStyle(fontSize: 14),
               ),
               const Spacer(),
+
               // Save
               GestureDetector(
                 onTap: () => _onSave(context),
-                child: AppIcons.svg(AppIcons.save, size: 24),
+                child: Icon(
+                  currentPost.isSaved ? Icons.bookmark : Icons.bookmark_border,
+                  size: 26,
+                  color: Colors.black,
+                ),
               ),
             ],
           ),
