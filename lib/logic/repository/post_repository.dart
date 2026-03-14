@@ -3,7 +3,6 @@ import 'package:zrek_assignment/logic/model/post.dart';
 
 class PostRepository {
   static const int _limit = 10;
-
   final Random _random = Random();
 
   final List<String> _usernames = [
@@ -71,6 +70,10 @@ class PostRepository {
     },
   };
 
+  List<Post> getStoryUsers(List<Post> posts) {
+    return posts.where((p) => p.hasStory).toList();
+  }
+
   Future<List<Post>> fetchPosts(int page) async {
     if (page < 0) return [];
 
@@ -86,9 +89,8 @@ class PostRepository {
 
       /// 25% chance carousel
       final bool isCarousel = _random.nextInt(4) == 0;
-      final int imageCount = isCarousel ? _random.nextInt(3) + 2 : 1;
-
       final bool portrait = isCarousel;
+      final int imageCount = isCarousel ? _random.nextInt(3) + 2 : 1;
 
       final images = List.generate(
         imageCount,
@@ -101,16 +103,13 @@ class PostRepository {
         postId: "post_$postIndex",
         userId: "user_$username",
         username: username,
-
-        userStory: _random.nextBool(),
+        imageUrls: images,
+        hasStory: _random.nextBool(),
+        isVerified: special?["verified"] ?? (_random.nextInt(10) > 7),
 
         userAvatarUrl:
             special?["avatar"] ??
             "https://api.dicebear.com/7.x/adventurer/png?seed=$username",
-
-        isVerified: special?["verified"] ?? (_random.nextInt(10) > 7),
-
-        imageUrls: images,
 
         caption:
             special?["caption"] ?? _captions[_random.nextInt(_captions.length)],

@@ -20,15 +20,17 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     });
 
     on<FeedLoadMore>((event, emit) async {
+      if (state is! FeedLoaded) return;
       final current = state as FeedLoaded;
+      emit(current.copyWith(isFetchingMore: true));
       try {
         final newPosts = await _repo.fetchPosts(current.currentPage + 1);
-        final allPosts = [...current.posts, ...newPosts];
         emit(
-          FeedLoaded(
-            posts: allPosts,
+          current.copyWith(
+            posts: [...current.posts, ...newPosts],
             currentPage: current.currentPage + 1,
             hasMore: newPosts.isNotEmpty,
+            isFetchingMore: false,
           ),
         );
       } catch (e) {

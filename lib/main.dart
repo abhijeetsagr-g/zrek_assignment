@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zrek_assignment/core/config/app_theme.dart';
 import 'package:zrek_assignment/logic/bloc/feed/feed_bloc.dart';
-import 'package:zrek_assignment/ui/home/home_view.dart';
+import 'package:zrek_assignment/ui/screen/feed_screen.dart';
 
 void main() {
   runApp(
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightMode,
-      home: HomeView(),
+      home: FeedScreen(),
     );
   }
 }

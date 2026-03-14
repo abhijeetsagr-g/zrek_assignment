@@ -5,7 +5,6 @@ import 'package:zrek_assignment/logic/model/post.dart';
 class PostHeader extends StatelessWidget {
   const PostHeader({super.key, required this.post});
   final Post post;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -18,7 +17,7 @@ class PostHeader extends StatelessWidget {
             height: 38,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              gradient: post.userStory
+              gradient: post.hasStory
                   ? const LinearGradient(
                       colors: [
                         Color(0xFFf09433),
@@ -31,19 +30,17 @@ class PostHeader extends StatelessWidget {
                       end: Alignment.bottomRight,
                     )
                   : null,
-              color: post.userStory ? null : Colors.transparent,
+              color: Colors.white,
             ),
             child: Padding(
-              padding: EdgeInsets.all(post.userStory ? 2 : 0),
+              padding: EdgeInsets.all(post.hasStory ? 2 : 0),
               child: CircleAvatar(
                 backgroundImage: CachedNetworkImageProvider(post.userAvatarUrl),
                 backgroundColor: Colors.grey[200],
               ),
             ),
           ),
-
           const SizedBox(width: 10),
-
           // Username + verified
           Expanded(
             child: Row(
@@ -67,7 +64,6 @@ class PostHeader extends StatelessWidget {
               ],
             ),
           ),
-
           GestureDetector(
             onTap: () {},
             child: const Icon(Icons.more_vert, size: 20),

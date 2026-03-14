@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:zrek_assignment/ui/home/widget/post_shimmer/action_shimmer.dart';
-import 'package:zrek_assignment/ui/home/widget/post_shimmer/caption_shimmer.dart';
-import 'package:zrek_assignment/ui/home/widget/post_shimmer/header_shimmer.dart';
-import 'package:zrek_assignment/ui/home/widget/post_shimmer/media_shimmer.dart';
-import 'package:zrek_assignment/ui/home/widget/post_shimmer/time_shimmer.dart';
+import 'package:zrek_assignment/ui/widget/post_shimmer/action_shimmer.dart';
+import 'package:zrek_assignment/ui/widget/post_shimmer/caption_shimmer.dart';
+import 'package:zrek_assignment/ui/widget/post_shimmer/header_shimmer.dart';
+import 'package:zrek_assignment/ui/widget/post_shimmer/media_shimmer.dart';
+import 'package:zrek_assignment/ui/widget/post_shimmer/time_shimmer.dart';
 
 class PostCardShimmer extends StatelessWidget {
   const PostCardShimmer({super.key});

@@ -7,13 +7,13 @@ class FeedStarted extends FeedEvent {}
 class FeedLoadMore extends FeedEvent {}
 
 class FeedLikeToggled extends FeedEvent {
-  String postId;
+  final String postId;
 
   FeedLikeToggled(this.postId);
 }
 
 class FeedSaveToggled extends FeedEvent {
-  String postId;
+  final String postId;
 
   FeedSaveToggled(this.postId);
 }

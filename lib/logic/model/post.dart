@@ -3,7 +3,7 @@ class Post {
   final String userId;
   final String username;
   final String userAvatarUrl;
-  final bool userStory;
+  final bool hasStory;
   final bool isVerified;
 
   // Post Info
@@ -21,7 +21,7 @@ class Post {
 
   Post({
     required this.caption,
-    required this.userStory,
+    required this.hasStory,
     required this.postId,
     required this.imageUrls,
     required this.userId,
@@ -48,7 +48,7 @@ class Post {
       caption: caption,
       commentCount: commentCount,
       postTime: postTime,
-      userStory: userStory,
+      hasStory: hasStory,
       shareCount: shareCount,
       likeCount: likeCount ?? this.likeCount,
       isLiked: isLiked ?? this.isLiked,
