@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinch_scrollable/pinch_scrollable.dart';
 import 'package:zrek_assignment/logic/bloc/feed/feed_bloc.dart';
 import 'package:zrek_assignment/ui/home/widget/post/post_card.dart';
+import 'package:zrek_assignment/ui/home/widget/post_shimmer/post_card_shimmer.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -40,7 +41,10 @@ class _HomeViewState extends State<HomeView> {
       body: BlocBuilder<FeedBloc, FeedState>(
         builder: (context, state) {
           if (state is FeedLoading || state is FeedInitial) {
-            return const Center(child: CircularProgressIndicator());
+            return ListView.builder(
+              itemCount: 5,
+              itemBuilder: (context, index) => const PostCardShimmer(),
+            );
           }
 
           if (state is FeedError) {
@@ -58,7 +62,7 @@ class _HomeViewState extends State<HomeView> {
                       : state.posts.length,
                   itemBuilder: (context, index) {
                     if (index == state.posts.length) {
-                      return const Center(child: CircularProgressIndicator());
+                      return PostCardShimmer();
                     }
                     return PostCard(post: state.posts[index]);
                   },

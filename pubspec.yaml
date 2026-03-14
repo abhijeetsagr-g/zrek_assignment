@@ -14,7 +14,9 @@ dependencies:
   cached_network_image: ^3.4.1
   flutter_svg: ^2.2.4
   font_awesome_flutter: ^10.7.0
-
+  flutter_bloc: ^9.1.1
+  pinch_scrollable: ^1.0.6
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

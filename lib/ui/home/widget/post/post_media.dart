@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pinch_scrollable/pinch_scrollable.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:zrek_assignment/ui/home/widget/post/dot_indicators.dart';
 
 class PostMedia extends StatefulWidget {
@@ -43,7 +44,11 @@ class _PostMediaState extends State<PostMedia> {
           imageUrl: images.first,
           fit: BoxFit.cover,
           width: double.infinity,
-          placeholder: (_, __) => Container(color: Colors.grey[200]),
+          placeholder: (_, __) => Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Container(color: Colors.white),
+          ),
           errorWidget: (_, __, ___) => Container(
             color: Colors.grey[200],
             child: const Icon(Icons.broken_image_outlined, color: Colors.grey),
@@ -76,9 +81,12 @@ class _PostMediaState extends State<PostMedia> {
                         fit: BoxFit.cover,
                         width: double.infinity,
                         height: 300,
-                        placeholder: (_, __) =>
-                            Container(color: Colors.grey[200]),
-                        errorWidget: (_, __, ___) => Container(
+                        placeholder: (_, __) => Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(color: Colors.white),
+                        ),
+                        errorWidget: (_, _, ___) => Container(
                           color: Colors.grey[200],
                           child: const Icon(
                             Icons.broken_image_outlined,
