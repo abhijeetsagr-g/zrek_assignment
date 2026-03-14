@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pinch_scrollable/pinch_scrollable.dart';
 import 'package:zrek_assignment/logic/bloc/feed/feed_bloc.dart';
-import 'package:zrek_assignment/ui/home/widget/post_card.dart';
+import 'package:zrek_assignment/ui/home/widget/post/post_card.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -28,6 +29,12 @@ class _HomeViewState extends State<HomeView> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<FeedBloc, FeedState>(
@@ -41,20 +48,22 @@ class _HomeViewState extends State<HomeView> {
           }
 
           if (state is FeedLoaded) {
-            return ListView.builder(
-              controller: _scrollController,
-              itemCount: state.hasMore
-                  ? state.posts.length + 1
-                  : state.posts.length,
-              itemBuilder: (context, index) {
-                final post = state.posts[index];
-
-                if (index == state.posts.length) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                return PostCard(post: post);
-              },
+            return PinchScrollableArea(
+              child: Builder(
+                builder: (builderContext) => ListView.builder(
+                  controller: _scrollController,
+                  physics: PinchScrollLockPhysics.build(builderContext),
+                  itemCount: state.hasMore
+                      ? state.posts.length + 1
+                      : state.posts.length,
+                  itemBuilder: (context, index) {
+                    if (index == state.posts.length) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    return PostCard(post: state.posts[index]);
+                  },
+                ),
+              ),
             );
           }
 
