@@ -36,19 +36,11 @@ submitted as part of the ZREX Flutter Developer Internship Assignment.
 - Error state handling with broken image fallback
 
 ## State Management — BLoC
-
 BLoC (Business Logic Component) was chosen for the following reasons:
-
 - **Separation of concerns** — UI, business logic, and data are strictly separated
 - **Predictable state** — every UI change is driven by an explicit event and state
 - **Scalability** — adding new features (e.g. comments, reels) only requires new events/states
-- **Testability** — BLoC logic can be unit tested independently of the UI
 
-The feed is managed by a single `FeedBloc` with the following events:
-- `FeedStarted` — initial load
-- `FeedLoadMore` — pagination trigger
-- `FeedLikeToggled` — like/unlike a post
-- `FeedSaveToggled` — save/unsave a post
 
 ## Architecture
 ```
