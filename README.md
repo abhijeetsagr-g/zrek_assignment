@@ -1,7 +1,28 @@
 # Instagram Feed UI — Flutter Assignment
 
-A replication of the Instagram Home Feed built with Flutter, 
+A replication of the Instagram Home Feed built with Flutter,
 submitted as part of the ZREX Flutter Developer Internship Assignment.
+
+## Screenshots
+
+<p align="center">
+  <img src="demo/shimmer.png" width="45%" />
+  <img src="demo/loaded.png" width="45%" />
+</p>
+
+## Demo
+
+<p align="center">
+  <img src="demo/shimmer.gif" width="30%" />
+  <img src="demo/stories.gif" width="30%" />
+  <img src="demo/scroll.gif" width="30%" />
+</p>
+
+<p align="center">
+  <img src="demo/zoom.gif" width="30%" />
+  <img src="demo/toggle.gif" width="30%" />
+  <img src="demo/unimplemented.gif" width="30%" />
+</p>
 
 ## Features
 - Instagram-style Home Feed with Stories tray and Post feed
@@ -74,27 +95,3 @@ lib/
 ```bash
    flutter run
 ```
-
-## Demo
-### Shimmer Loading
-![Shimmer](demo/shimmer.gif)
-
-### Stories Tray
-![Stories](demo/stories.gif)
-
-### Infinite Scroll
-![Scroll](demo/scroll.gif)
-
-### Pinch to Zoom
-![Zoom](demo/zoom.gif)
-
-### Like & Save Toggle
-![Toggle](demo/toggle.gif)
-
-### Unimplemented Actions
-![Unimplemented](demo/unimplemented.gif)
-
-## Screenshots
-![Shimmer](demo/shimmer.png)
-
-![Loaded](demo/loaded.png)
