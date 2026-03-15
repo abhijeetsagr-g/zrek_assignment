@@ -82,7 +82,7 @@ lib/
 
 1. Clone the repository
 ```bash
-   git clone https://github.com/YOUR_USERNAME/zrek_assignment.git
+   git clone https://github.com/abhijeetsagr-g/zrek_assignment.git
    cd zrek_assignment
 ```
 
